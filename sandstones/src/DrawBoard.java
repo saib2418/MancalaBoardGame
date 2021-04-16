@@ -1,5 +1,10 @@
+package sandstone;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -22,23 +27,29 @@ public class DrawBoard {
             JPanel center = new JPanel();
             center.setLayout(new GridLayout(2, 6));
             for (int i = 0; i < 12; i++) {
-                PotPainter p = new PotPainter();
+                PotPainter p = new PotPainter(i);
                 pots.add(p);
                 center.add(p);
             }
             add(center, BorderLayout.CENTER);
 
             // one side
-            PotPainter east = new PotPainter();
+            PotPainter east = new PotPainter(13);
             pots.add(east);
             add(east, BorderLayout.EAST);
             east.setPreferredSize(new Dimension(100, 0));
 
             // the other side
-            PotPainter west = new PotPainter();
+            PotPainter west = new PotPainter(14);
             pots.add(west);
             add(west, BorderLayout.WEST);
             west.setPreferredSize(new Dimension(100, 0));
+        }
+
+        // This method will handle moving stones when a pit is clicked.
+        public void pitPressed(int position) {
+            System.out.println("Pit " + position + " has been clicked.");
+            pots.get(position);
         }
 
         public void paint(Graphics g) {
@@ -56,6 +67,12 @@ public class DrawBoard {
         private static final int MARGIN = 2;
         private static final int STONE_SIZE = 10;
         private int stones = 0;
+        private int position;
+
+        public PotPainter(int pos) {
+            this.position = pos;
+            addMouseListener(new MousePressedListener());
+        }
 
         public void setStones(int stones) {
             this.stones = stones;
@@ -71,6 +88,17 @@ public class DrawBoard {
             for (int i = 0; i < stones; i++) {
                 g.drawOval(center.x + r.nextInt(d) - d / 2, center.y + r.nextInt(d) - d / 2,
                         STONE_SIZE, STONE_SIZE);
+            }
+        }
+
+        private class MousePressedListener extends MouseAdapter {
+            @Override
+            public void mousePressed(MouseEvent event) {
+                Point mousePoint = event.getPoint();
+                System.out.println("Pit # " + position + " clicked");
+                Ellipse2D.Double pitBoundaries = new Ellipse2D.Double(MARGIN, MARGIN, getWidth() - MARGIN * 2, getHeight() - MARGIN * 2);
+                System.out.println(mousePoint.getX() + " " + mousePoint.getY());
+                System.out.println(pitBoundaries.contains(mousePoint.getX(), mousePoint.getY()));
             }
         }
     }
