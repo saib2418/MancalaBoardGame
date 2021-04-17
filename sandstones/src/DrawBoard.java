@@ -90,7 +90,7 @@ public class DrawBoard {
             int d = Math.min(getWidth(), getHeight()) / 2;
             Point center = new Point(getWidth() / 2, getHeight() / 2);
             for (int i = 0; i < stones; i++) {
-                g.drawOval(center.x + r.nextInt(d) - d / 2, center.y + r.nextInt(d) - d / 2,
+                g.fillOval(center.x + r.nextInt(d) - d / 2, center.y + r.nextInt(d) - d / 2,
                         STONE_SIZE, STONE_SIZE);
             }
         }
