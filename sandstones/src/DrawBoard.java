@@ -1,5 +1,3 @@
-package sandstone;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -9,9 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-/*
-Seeing if this gets committed to Github from my computer.
-*/
 
 public class DrawBoard {
 
@@ -19,32 +14,33 @@ public class DrawBoard {
      * paints a full board
      */
     public static class BoardPainter extends JPanel {
-        private ArrayList<PotPainter> pots = new ArrayList<>();
+        private ArrayList<Pit> pots = new ArrayList<>();
         private java.util.List<Integer> mancalaBoard;
+        private Style style;
 
-        public BoardPainter(java.util.List<Integer> mancalaBoard) {
+        public BoardPainter(Style style, java.util.List<Integer> mancalaBoard) {
             this.mancalaBoard = mancalaBoard;
-
+            this.style = style;
             setLayout(new BorderLayout());
 
             // a 2x6 grid in the center
             JPanel center = new JPanel();
             center.setLayout(new GridLayout(2, 6));
             for (int i = 0; i < 12; i++) {
-                PotPainter p = new PotPainter(i);
+                Pit p = new Pit(style, i);
                 pots.add(p);
                 center.add(p);
             }
             add(center, BorderLayout.CENTER);
 
             // one side
-            PotPainter east = new PotPainter(13);
+            Pit east = new Pit(style, 13);
             pots.add(east);
             add(east, BorderLayout.EAST);
             east.setPreferredSize(new Dimension(100, 0));
 
             // the other side
-            PotPainter west = new PotPainter(14);
+            Pit west = new Pit(style, 14);
             pots.add(west);
             add(west, BorderLayout.WEST);
             west.setPreferredSize(new Dimension(100, 0));
@@ -57,6 +53,7 @@ public class DrawBoard {
         }
 
         public void paint(Graphics g) {
+
             for (int i = 0; i < mancalaBoard.size(); i++) {
                 pots.get(i).setStones(mancalaBoard.get(i));
             }
@@ -67,13 +64,15 @@ public class DrawBoard {
     /**
      * paints a pot
      */
-    public static class PotPainter extends JPanel {
+    public static class Pit extends JPanel {
         private static final int MARGIN = 2;
         private static final int STONE_SIZE = 10;
         private int stones = 0;
         private int position;
+        private Style style;
 
-        public PotPainter(int pos) {
+        public Pit(Style style, int pos) {
+            this.style = style;
             this.position = pos;
             addMouseListener(new MousePressedListener());
         }
@@ -83,14 +82,21 @@ public class DrawBoard {
         }
 
         public void paint(Graphics g) {
-            super.paint(g);
-            g.setColor(Color.BLACK);
-            g.drawOval(MARGIN, MARGIN, getWidth() - MARGIN * 2, getHeight() - MARGIN * 2);
+            Graphics2D g2 = (Graphics2D) g;
+            super.paint(g2);
+            setBackground(style.getBoardBackgroundColor());
+            g2.setStroke(new BasicStroke(style.getPitStrokeThickness()));
+            g2.setColor(style.getLineColor());
+            g2.drawOval(MARGIN, MARGIN, getWidth() - MARGIN * 2, getHeight() - MARGIN * 2);
+            g2.setColor(style.getPitBackgroundColor());
+            g2.fillOval(MARGIN, MARGIN, getWidth() - MARGIN * 2, getHeight() - MARGIN * 2);
             Random r = new Random();
             int d = Math.min(getWidth(), getHeight()) / 2;
             Point center = new Point(getWidth() / 2, getHeight() / 2);
             for (int i = 0; i < stones; i++) {
-                g.drawOval(center.x + r.nextInt(d) - d / 2, center.y + r.nextInt(d) - d / 2,
+                g2.setColor(style.getStoneColor());
+                g2.setStroke(new BasicStroke(style.getStoneStrokeThickness()));
+                g2.fillOval(center.x + r.nextInt(d) - d / 2, center.y + r.nextInt(d) - d / 2,
                         STONE_SIZE, STONE_SIZE);
             }
         }
@@ -109,9 +115,10 @@ public class DrawBoard {
 
 
     public static void main(String... args) {
+        Style boardStyle = new BlueStyle();
         SwingUtilities.invokeLater(() -> {
             JFrame jf = new JFrame();
-            jf.add(new BoardPainter(new ArrayList<>(
+            jf.add(new BoardPainter(boardStyle, new ArrayList<>(
                     Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 4, 2))));
             jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             jf.setSize(800, 300);
