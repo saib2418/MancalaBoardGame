@@ -9,12 +9,12 @@ import java.util.Random;
 
 
 public class DrawBoard {
-
     /**
-     * paints a full board
+     * @author saibharathula for this class of painting a board with pits and dots.
      */
+
     public static class BoardPainter extends JPanel {
-        private ArrayList<Pit> pots = new ArrayList<>();
+        private ArrayList<Pit> pits = new ArrayList<>();
         private java.util.List<Integer> mancalaBoard;
         private Style style;
 
@@ -28,20 +28,20 @@ public class DrawBoard {
             center.setLayout(new GridLayout(2, 6));
             for (int i = 0; i < 12; i++) {
                 Pit p = new Pit(style, i);
-                pots.add(p);
+                pits.add(p);
                 center.add(p);
             }
             add(center, BorderLayout.CENTER);
 
             // one side
             Pit east = new Pit(style, 13);
-            pots.add(east);
+            pits.add(east);
             add(east, BorderLayout.EAST);
             east.setPreferredSize(new Dimension(100, 0));
 
             // the other side
             Pit west = new Pit(style, 14);
-            pots.add(west);
+            pits.add(west);
             add(west, BorderLayout.WEST);
             west.setPreferredSize(new Dimension(100, 0));
         }
@@ -49,13 +49,13 @@ public class DrawBoard {
         // This method will handle moving stones when a pit is clicked.
         public void pitPressed(int position) {
             System.out.println("Pit " + position + " has been clicked.");
-            pots.get(position);
+            pits.get(position);
         }
 
         public void paint(Graphics g) {
 
             for (int i = 0; i < mancalaBoard.size(); i++) {
-                pots.get(i).setStones(mancalaBoard.get(i));
+                pits.get(i).setStones(mancalaBoard.get(i));
             }
             super.paint(g);
         }

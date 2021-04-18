@@ -1,2 +1,2 @@
 # MancalaBoardGame
-group project to create simle mancala board game
+group project to create simple mancala board game
