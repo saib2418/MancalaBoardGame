@@ -94,9 +94,13 @@ public class DrawBoard {
             int d = Math.min(getWidth(), getHeight()) / 2;
             Point center = new Point(getWidth() / 2, getHeight() / 2);
             for (int i = 0; i < stones; i++) {
+<<<<<<< HEAD
                 g2.setColor(style.getStoneColor());
                 g2.setStroke(new BasicStroke(style.getStoneStrokeThickness()));
                 g2.fillOval(center.x + r.nextInt(d) - d / 2, center.y + r.nextInt(d) - d / 2,
+=======
+                g.fillOval(center.x + r.nextInt(d) - d / 2, center.y + r.nextInt(d) - d / 2,
+>>>>>>> a4a4d03fe2f0ad399ec51bcfd10fe4f20344835a
                         STONE_SIZE, STONE_SIZE);
             }
         }
