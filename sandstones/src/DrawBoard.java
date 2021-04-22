@@ -1,4 +1,4 @@
-import javax.swing.*;
+package sandstone;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -9,10 +9,11 @@ import java.util.Arrays;
 import java.util.EventListener;
 import java.util.Random;
 
+import javax.swing.*;
+
 
 public class DrawBoard {
     static BoardPainter board;
-
     /**
      * paints a full board
      */
@@ -21,9 +22,11 @@ public class DrawBoard {
         private java.util.List<Integer> mancalaBoard;
         private ArrayList<EventListener> listeners = new ArrayList<>();
         private Style style;
+        private boolean turn;
 
         public BoardPainter(Style style, java.util.List<Integer> mancalaBoard) {
-            this.mancalaBoard = mancalaBoard;
+            turn = true;
+        	this.mancalaBoard = mancalaBoard;
             this.style = style;
             setLayout(new BorderLayout());
 
@@ -87,7 +90,7 @@ public class DrawBoard {
             }
 
             for (int i = 0; i < mancalaBoard.size(); i++) {
-                pots.get(i).setStones(mancalaBoard.get(i));
+                pots.get(i).setStones(4);
             }
         }
 
@@ -97,6 +100,22 @@ public class DrawBoard {
             if (position == 12 || position == 13)
                 return; // TODO add error message saying goal pits can't be clicked
             // TODO this should NOT count as a move or cause game to switch to other player
+            if(position >= 0 && position <= 5)
+            {
+            	if(!turn)
+            	{
+            		return;// TODO add error message saying goal pits can't be clicked
+                    // TODO this should NOT count as a move or cause game to switch to other player
+            	}
+            }
+            if(position >= 6 && position <= 11)
+            {
+            	if(turn)
+            	{
+            		return;// TODO add error message saying goal pits can't be clicked
+                    // TODO this should NOT count as a move or cause game to switch to other player
+            	}
+            }
             Pit current = pots.get(position);
             int stones = current.getStones();
             if (stones == 0)
@@ -114,6 +133,14 @@ public class DrawBoard {
                 stones--;
             }
             System.out.println("After stones loop");
+            if(turn)
+            {
+            	turn = false;
+            }
+            else if(!turn)
+            {
+            	turn = true;
+            }
 
         }
 
@@ -236,7 +263,7 @@ public class DrawBoard {
 
 
     public static void main(String... args) {
-        Style boardStyle = new PinkStyle();
+        Style boardStyle = new BlueStyle();
         board = new BoardPainter(boardStyle, new ArrayList<>(
                 Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 4, 2)));
         SwingUtilities.invokeLater(() -> {
