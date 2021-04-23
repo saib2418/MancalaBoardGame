@@ -64,7 +64,7 @@ public class DrawBoard {
                 pots.get(i).setPrev(pots.get(i + 1));
             }
             pots.get(0).setPrev(pots.get(1));
-            pots.get(0).setNext(pots.get(13));
+            pots.get(0).setNext(pots.get(13)); // This might need to be changed when the skip other player's mancala part works.
 
             pots.get(5).setPrev(pots.get(12));
             pots.get(5).setNext(pots.get(4));
@@ -85,12 +85,11 @@ public class DrawBoard {
             pots.get(13).setPrev(pots.get(0));
             pots.get(13).setNext(pots.get(6));
 
-            for (Pit p : pots) {
-                System.out.println(p);
-            }
-
             for (int i = 0; i < mancalaBoard.size(); i++) {
                 pots.get(i).setStones(4);
+            }
+            for (Pit p : pots) {
+                System.out.println(p);
             }
         }
 
@@ -102,7 +101,7 @@ public class DrawBoard {
             // TODO this should NOT count as a move or cause game to switch to other player
             if(position >= 0 && position <= 5)
             {
-            	if(!turn)
+            	if(turn)
             	{
             		return;// TODO add error message saying goal pits can't be clicked
                     // TODO this should NOT count as a move or cause game to switch to other player
@@ -110,7 +109,7 @@ public class DrawBoard {
             }
             if(position >= 6 && position <= 11)
             {
-            	if(turn)
+            	if(!turn)
             	{
             		return;// TODO add error message saying goal pits can't be clicked
                     // TODO this should NOT count as a move or cause game to switch to other player
@@ -141,7 +140,25 @@ public class DrawBoard {
             {
             	turn = true;
             }
-
+            if(turn)
+            {
+            	pots.get(11).setNext(pots.get(12));
+            }
+            else if(!turn)
+            {
+            	pots.get(11).setNext(pots.get(5));
+            }
+            if(!turn)
+            {
+            	pots.get(0).setNext(pots.get(13));
+            }
+            else if(turn)
+            {
+            	pots.get(0).setNext(pots.get(6));
+            }
+            for (Pit p : pots) {
+                System.out.println("Pit " + p.position + " stones: " + p.stones);
+            }
         }
 
 
@@ -156,7 +173,7 @@ public class DrawBoard {
     public static class Pit extends JPanel {
         private static final int MARGIN = 2;
         private static final int STONE_SIZE = 10;
-        private int stones = 0;
+        private int stones;
         private final int position;
         private String label;
         public Pit next;
