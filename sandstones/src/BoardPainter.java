@@ -23,6 +23,7 @@ public class BoardPainter extends JPanel {
 
             pits.add(p);
 
+
             listeners.add(p.getListener());
             center.add(p);
         }
@@ -50,9 +51,7 @@ public class BoardPainter extends JPanel {
                 Dimension(100, 0));
 
         // link pits to each other for dropping stones
-        for (
-                int i = 1;
-                i < 5; i++) {
+        for (int i = 1; i < 5; i++) {
             pits.get(i).setNext(pits.get(i - 1));
             pits.get(i).setPrev(pits.get(i + 1));
         }
@@ -70,9 +69,7 @@ public class BoardPainter extends JPanel {
 
                 setNext(pits.get(4));
 
-        for (
-                int i = 7;
-                i < 11; i++) {
+        for (int i = 7; i < 11; i++) {
             pits.get(i).setNext(pits.get(i + 1));
             pits.get(i).setPrev(pits.get(i - 1));
         }
@@ -108,10 +105,10 @@ public class BoardPainter extends JPanel {
                 int i = 0; i < mancalaBoard.size(); i++) {
             pits.get(i).setStones(4);
         }
-        for (
-                Pit p : pits) {
+        for (Pit p : pits) {
             System.out.println(p);
         }
+
 
     }
 

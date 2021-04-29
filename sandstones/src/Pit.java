@@ -71,6 +71,7 @@ public class Pit extends JPanel {
         this.style = newStyle;
     }
 
+
     public String toString() {
         String str = "";
         str += "\nPit #" + position;
@@ -94,6 +95,7 @@ public class Pit extends JPanel {
         g2.drawOval(MARGIN, MARGIN, getWidth() - MARGIN * 2, getHeight() - MARGIN * 2);
         g2.setColor(style.getPitBackgroundColor());
         g2.fillOval(MARGIN, MARGIN, getWidth() - MARGIN * 2, getHeight() - MARGIN * 2);
+        g2.drawString("A" + position, 1, getPosition());
         Random r = new Random();
         int d = Math.min(getWidth(), getHeight()) / 2;
         Point center = new Point(getWidth() / 2, getHeight() / 2);
@@ -103,6 +105,7 @@ public class Pit extends JPanel {
             g.fillOval(center.x + r.nextInt(d) - d / 2, center.y + r.nextInt(d) - d / 2,
                     STONE_SIZE, STONE_SIZE);
         }
+
     }
 
 

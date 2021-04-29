@@ -40,11 +40,17 @@ public class MancalaBoard extends BoardPainter {
             next = next.getNext();
             stones--;
         }
+
         System.out.println("After stones loop");
-        if (turn) {
-            turn = false;
-        } else if (!turn) {
-            turn = true;
+
+        if (!((turn && next.prev.getPosition() == 12) || (!turn && next.prev.getPosition() == 13))) {
+
+            if (turn) {
+                turn = false;
+            } else if (!turn) {
+                turn = true;
+            }
+
         }
         if (turn) {
             pits.get(11).setNext(pits.get(12));
