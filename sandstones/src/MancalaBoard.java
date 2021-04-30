@@ -1,8 +1,8 @@
 public class MancalaBoard extends BoardPainter {
     private boolean turn; // true represents Player A and false = Player B
 
-    public MancalaBoard(Style style, java.util.List<Integer> mancalaBoard) {
-        super(style, mancalaBoard);
+    public MancalaBoard(Style style, int stonesPerPit) {
+        super(style, stonesPerPit);
         turn = true;
     }
 
@@ -36,15 +36,35 @@ public class MancalaBoard extends BoardPainter {
         while (stones > 0) {
             current.loseStone();
             next.addStone();
-            this.repaint();
             next = next.getNext();
             stones--;
         }
 
+
+        Pit lastPit = next.getPrev();
+        Pit oppositePit = getOppositePit(lastPit);
+        Pit mancala = getCurrentMancala();
+
+        System.out.println("Current player: " + (turn ? "A" : "B"));
+        System.out.println("Last pit: " + lastPit);
+        System.out.println("Opposite pit: " + oppositePit);
+        System.out.println("Mancala: " + mancala);
+
+        System.out.println(inMyRow(lastPit.getPosition()));
+        System.out.println(lastPit.getStones() == 1);
+        System.out.println(!oppositePit.isEmpty());
+
+        if (inMyRow(lastPit.getPosition()) && lastPit.getStones() == 1
+                && !oppositePit.isEmpty()) {
+            System.out.println("empty pit grab");
+            mancala.addMany(lastPit.emptyAll());
+            mancala.addMany(oppositePit.emptyAll());
+        }
+
         System.out.println("After stones loop");
 
-        if (!((turn && next.prev.getPosition() == 12) || (!turn && next.prev.getPosition() == 13))) {
-
+        if (!((turn && next.prev.getPosition() == 12) ||
+                (!turn && next.prev.getPosition() == 13))) {
             if (turn) {
                 turn = false;
             } else if (!turn) {
@@ -62,25 +82,61 @@ public class MancalaBoard extends BoardPainter {
         } else if (turn) {
             pits.get(0).setNext(pits.get(6));
         }
+
+        if (rowAEmpty()) {
+            mancala = pits.get(13);
+            for (int i = 0; i <= 5; i++) {
+                mancala.addMany(pits.get(i).emptyAll());
+            }
+            // move all stones from row B to Mancala B
+        } else if (rowBEmpty()) {
+            mancala = pits.get(12);
+            for (int i = 6; i <= 11; i++) {
+                mancala.addMany(pits.get(i).emptyAll());
+            }
+            // move all stones from row A to Mancala A
+        }
+
         for (Pit p : pits) {
             System.out.println("Pit " + p.getPosition() + " stones: " + p.getStones());
         }
-        if (turn && rowAEmpty()) {
-            // move all stones from row B to Mancala B
-        } else if (!turn && rowBEmpty()) {
-            // move all stones from row A to Mancala A
-        }
+
     }
 
 
     private boolean rowAEmpty() {
-        return pits.get(0).empty() && pits.get(1).empty() && pits.get(2).empty()
-                && pits.get(3).empty() && pits.get(4).empty() && pits.get(5).empty();
+        return pits.get(6).isEmpty() && pits.get(7).isEmpty() && pits.get(8).isEmpty()
+                && pits.get(9).isEmpty() && pits.get(10).isEmpty() && pits.get(11).isEmpty();
     }
 
     private boolean rowBEmpty() {
-        return pits.get(6).empty() && pits.get(7).empty() && pits.get(8).empty()
-                && pits.get(9).empty() && pits.get(10).empty() && pits.get(11).empty();
+        return pits.get(0).isEmpty() && pits.get(1).isEmpty() && pits.get(2).isEmpty()
+                && pits.get(3).isEmpty() && pits.get(4).isEmpty() && pits.get(5).isEmpty();
+    }
+
+    private boolean inMyRow(int pos) {
+        if (turn) {
+            return pos == 6 || pos == 7 || pos == 8 || pos == 9 || pos == 10 || pos == 11;
+        } else {
+            return pos == 0 || pos == 1 || pos == 2 || pos == 3 || pos == 4 || pos == 5;
+        }
+
+    }
+
+    private Pit getOppositePit(Pit thisPit) {
+        int thisPitPosition = thisPit.getPosition();
+        if (thisPitPosition >= 0 && thisPitPosition <= 5)
+            return pits.get(thisPitPosition + 6);
+        else
+            return pits.get(thisPitPosition - 6);
+
+    }
+
+    private Pit getCurrentMancala() {
+        if (turn)
+            return pits.get(12);
+        else
+            return pits.get(13);
     }
 
 

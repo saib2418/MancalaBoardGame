@@ -20,7 +20,6 @@ public class Pit extends JPanel {
     public Pit(Style style, int pos) {
         this.style = style;
         this.position = pos;
-
     }
 
     public int getPosition() {
@@ -49,22 +48,38 @@ public class Pit extends JPanel {
 
     public void setStones(int stones) {
         this.stones = stones;
+        repaint();
     }
 
     public int getStones() {
         return this.stones;
     }
 
-    public boolean empty() {
+    public boolean isEmpty() {
         return this.stones == 0;
+    }
+
+    public int emptyAll() {
+        int numStones = stones;
+        stones = 0;
+        repaint();
+        return numStones;
+
     }
 
     public void addStone() {
         stones++;
+        repaint();
+    }
+
+    public void addMany(int newStones) {
+        stones += newStones;
+        repaint();
     }
 
     public void loseStone() {
         stones--;
+        repaint();
     }
 
     public void setStyle(Style newStyle) {
@@ -86,26 +101,31 @@ public class Pit extends JPanel {
 
     }
 
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        super.paint(g2);
+        super.paintComponent(g2);
         setBackground(style.getBoardBackgroundColor());
-        g2.setStroke(new BasicStroke(style.getPitStrokeThickness()));
+        int pitStroke = style.getPitStrokeThickness();
+        g2.setStroke(new BasicStroke(pitStroke));
         g2.setColor(style.getLineColor());
         g2.drawOval(MARGIN, MARGIN, getWidth() - MARGIN * 2, getHeight() - MARGIN * 2);
         g2.setColor(style.getPitBackgroundColor());
         g2.fillOval(MARGIN, MARGIN, getWidth() - MARGIN * 2, getHeight() - MARGIN * 2);
-        g2.drawString("A" + position, 1, getPosition());
+        g2.drawString("\nA" + position, 20, 10);
         Random r = new Random();
-        int d = Math.min(getWidth(), getHeight()) / 2;
+        int d = Math.min(getWidth() - MARGIN * 2, getHeight() - MARGIN * 2) / 2;
         Point center = new Point(getWidth() / 2, getHeight() / 2);
         for (int i = 0; i < stones; i++) {
             g2.setColor(style.getStoneColor());
             g2.setStroke(new BasicStroke(style.getStoneStrokeThickness()));
-            g.fillOval(center.x + r.nextInt(d) - d / 2, center.y + r.nextInt(d) - d / 2,
+            g2.fillOval(center.x + r.nextInt(d) - d / 2, center.y + r.nextInt(d) - d / 2,
                     STONE_SIZE, STONE_SIZE);
         }
-
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

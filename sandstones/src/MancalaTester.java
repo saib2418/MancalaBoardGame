@@ -1,10 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class MancalaTester {
@@ -15,42 +12,74 @@ public class MancalaTester {
      */
 
     public static void main(String... args) {
-        Style boardStyle = new BlueStyle();
-        board = new MancalaBoard(boardStyle, new ArrayList<>(
-                Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 4, 2)));
-        for (Pit p : board.pits) {
-            p.addMouseListener(new MouseListener() {
-                public void mouseClicked(MouseEvent e) {
+        JFrame initialWindow = new JFrame("Settings");
+
+        String[] stylesList = {"Blue", "Green", "Pink"};
+        String[] stonesList = {"3", "4"};
+
+        JComboBox stylesMenu = new JComboBox(stylesList);
+        JComboBox stonesMenu = new JComboBox(stonesList);
+        JButton startButton = new JButton("Start");
+
+        startButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                initialWindow.dispatchEvent(new WindowEvent(initialWindow, WindowEvent.WINDOW_CLOSING));
+                String styleStr = stylesMenu.getSelectedItem().toString().toLowerCase();
+                int numStones = Integer.parseInt(stonesMenu.getSelectedItem().toString());
+                Style style = null;
+                if (styleStr.equals("blue")) {
+                    style = new BlueStyle();
+                } else if (styleStr.equals("green")) {
+                    style = new GreenStyle();
+                } else if (styleStr.equals("pink")) {
+                    style = new PinkStyle();
                 }
 
-                public void mousePressed(MouseEvent e) {
-                    Point mousePoint = e.getPoint();
-                    Ellipse2D.Double pitBoundaries = p.getPitBoundaries();
-                    if (pitBoundaries.contains(mousePoint.getX(), mousePoint.getY()))
-                        board.pitPressed(p.getPosition());
-                }
+                board = new MancalaBoard(style, numStones);
+                for (Pit p : board.pits) {
+                    p.addMouseListener(new MouseListener() {
+                        public void mouseClicked(MouseEvent e) {
+                        }
 
-                public void mouseReleased(MouseEvent e) {
-                }
+                        public void mousePressed(MouseEvent e) {
+                            Point mousePoint = e.getPoint();
+                            Ellipse2D.Double pitBoundaries = p.getPitBoundaries();
+                            if (pitBoundaries.contains(mousePoint.getX(), mousePoint.getY())) {
+                                board.pitPressed(p.getPosition());
+                            }
+                        }
 
-                public void mouseEntered(MouseEvent e) {
-                }
+                        public void mouseReleased(MouseEvent e) {
+                        }
 
-                public void mouseExited(MouseEvent e) {
+                        public void mouseEntered(MouseEvent e) {
+                        }
+
+                        public void mouseExited(MouseEvent e) {
+                        }
+                    });
+                    board.listeners.add(p.getListener());
                 }
-            });
-            board.listeners.add(p.getListener());
-        }
-        SwingUtilities.invokeLater(() -> {
-            JFrame jf = new JFrame("Mancala");
-            /*
-            Add button for changing styles here. Whenever new style is chosen, call redraw method
-             on board.
-             */
-            jf.add(board);
-            jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            jf.setSize(800, 300);
-            jf.setVisible(true);
+                SwingUtilities.invokeLater(() -> {
+                    JFrame jf = new JFrame("Mancala");
+                    jf.setLayout(new BorderLayout());
+
+                    jf.add(board, BorderLayout.CENTER);
+
+                    jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    jf.setSize(800, 300);
+                    jf.setVisible(true);
+                });
+
+            }
         });
+
+        initialWindow.setSize(500, 300);
+        initialWindow.setLayout(new FlowLayout());
+        initialWindow.add(stylesMenu);
+        initialWindow.add(stonesMenu);
+        initialWindow.add(startButton);
+        initialWindow.setVisible(true);
+
     }
 }
