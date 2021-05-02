@@ -38,6 +38,7 @@ public class MancalaBoard extends BoardPainter {
             next.addStone();
             next = next.getNext();
             stones--;
+            
         }
 
 

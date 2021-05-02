@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
 import java.awt.geom.Ellipse2D;
-import java.util.Random;
 
 /**
  * paints a pot
@@ -48,6 +47,7 @@ public class Pit extends JPanel {
 
     public void setStones(int stones) {
         this.stones = stones;
+        //stonesChanged = true;
         repaint();
     }
 
@@ -111,20 +111,22 @@ public class Pit extends JPanel {
         g2.drawOval(MARGIN, MARGIN, getWidth() - MARGIN * 2, getHeight() - MARGIN * 2);
         g2.setColor(style.getPitBackgroundColor());
         g2.fillOval(MARGIN, MARGIN, getWidth() - MARGIN * 2, getHeight() - MARGIN * 2);
+
         g2.drawString("\nA" + position, 20, 10);
-        Random r = new Random();
-        int d = Math.min(getWidth() - MARGIN * 2, getHeight() - MARGIN * 2) / 2;
+
+        int h = getWidth() / 2 - MARGIN * 6;
+        int k = getHeight() / 2 - MARGIN * 6;
+        double twoPI = Math.PI * 2;
         Point center = new Point(getWidth() / 2, getHeight() / 2);
+        System.out.println(getWidth() + " " + getHeight());
+        g2.setColor(style.getStoneColor());
+        g2.setStroke(new BasicStroke(style.getStoneStrokeThickness()));
+        g2.setFont(new Font("Arial", Font.BOLD, 18));
+        g2.drawString(stones + "", center.x, center.y);
         for (int i = 0; i < stones; i++) {
-            g2.setColor(style.getStoneColor());
-            g2.setStroke(new BasicStroke(style.getStoneStrokeThickness()));
-            g2.fillOval(center.x + r.nextInt(d) - d / 2, center.y + r.nextInt(d) - d / 2,
-                    STONE_SIZE, STONE_SIZE);
-        }
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            int a = (int) (center.x + h * Math.cos(twoPI * i / stones)) - MARGIN;
+            int b = (int) (center.y + k * Math.sin(twoPI * i / stones)) - MARGIN;
+            g2.fillOval(a, b, STONE_SIZE, STONE_SIZE);
         }
     }
 
