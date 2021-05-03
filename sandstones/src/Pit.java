@@ -117,7 +117,6 @@ public class Pit extends JPanel {
         int k = getHeight() / 2 - MARGIN * 6;
         double twoPI = Math.PI * 2;
         Point center = new Point(getWidth() / 2, getHeight() / 2);
-        System.out.println(getWidth() + " " + getHeight());
         g2.setColor(style.getStoneColor());
         g2.setStroke(new BasicStroke(style.getStoneStrokeThickness()));
         g2.setFont(new Font("Arial", Font.BOLD, 18));

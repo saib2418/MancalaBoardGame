@@ -38,7 +38,7 @@ public class MancalaBoard extends BoardPainter {
             next.addStone();
             next = next.getNext();
             stones--;
-            
+
         }
 
 
@@ -51,13 +51,8 @@ public class MancalaBoard extends BoardPainter {
         System.out.println("Opposite pit: " + oppositePit);
         System.out.println("Mancala: " + mancala);
 
-        System.out.println(inMyRow(lastPit.getPosition()));
-        System.out.println(lastPit.getStones() == 1);
-        System.out.println(!oppositePit.isEmpty());
-
         if (inMyRow(lastPit.getPosition()) && lastPit.getStones() == 1
                 && !oppositePit.isEmpty()) {
-            System.out.println("empty pit grab");
             mancala.addMany(lastPit.emptyAll());
             mancala.addMany(oppositePit.emptyAll());
         }
