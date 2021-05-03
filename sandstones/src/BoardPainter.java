@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.EventListener;
 
 public class BoardPainter extends JPanel {
-    protected ArrayList<Pit> pits = new ArrayList<>();
+    protected ArrayList<PitPanel> pits = new ArrayList<>();
     protected ArrayList<EventListener> listeners = new ArrayList<>();
     protected Style style;
 
@@ -17,63 +17,67 @@ public class BoardPainter extends JPanel {
         center.setLayout(new GridLayout(2, 6));
 
         for (int i = 0; i < 12; i++) {
-            Pit p = new Pit(style, i);
-            pits.add(p);
+            Pit p = new Pit(i);
+            PitPanel pitPanel = new PitPanel(p, style);
+            pits.add(pitPanel);
 
-            listeners.add(p.getListener());
-            center.add(p);
+            // listeners.add(p.getListener());
+            center.add(pitPanel);
         }
 
         add(center, BorderLayout.CENTER);
-
         // one side
-        Pit east = new Pit(style, 12);
-        listeners.add(east.getListener());
-        pits.add(east);
+        Pit east = new Pit(12);
+        PitPanel eastPanel = new PitPanel(east, style);
+        // listeners.add(east.getListener());
+        pits.add(eastPanel);
 
-        add(east, BorderLayout.EAST);
-        east.setPreferredSize(new Dimension(100, 0));
+        eastPanel.setPreferredSize(new Dimension(100, 100));
+
+        add(eastPanel, BorderLayout.EAST);
 
         // the other side
-        Pit west = new Pit(style, 13);
-        listeners.add(west.getListener());
-        pits.add(west);
+        Pit west = new Pit(13);
+        PitPanel westPanel = new PitPanel(west, style);
+        //listeners.add(west.getListener());
+        pits.add(westPanel);
 
-        add(west, BorderLayout.WEST);
-        west.setPreferredSize(new Dimension(100, 0));
+        westPanel.setPreferredSize(new Dimension(100, 100));
+
+        add(westPanel, BorderLayout.WEST);
 
         // link pits to each other for dropping stones
         for (int i = 1; i < 5; i++) {
-            pits.get(i).setNext(pits.get(i - 1));
-            pits.get(i).setPrev(pits.get(i + 1));
+            pits.get(i).getPit().setNext(pits.get(i - 1).getPit());
+            pits.get(i).getPit().setPrev(pits.get(i + 1).getPit());
         }
-        pits.get(0).setPrev(pits.get(1));
-        pits.get(0).setNext(pits.get(13)); // This might need to be changed when the skip other player's mancala part works.
+        pits.get(0).getPit().setPrev(pits.get(1).getPit());
+        pits.get(0).getPit().setNext(pits.get(13).getPit()); // This might need to be changed when the skip other player's mancala part works.
 
-        pits.get(5).setPrev(pits.get(12));
-        pits.get(5).setNext(pits.get(4));
+        pits.get(5).getPit().setPrev(pits.get(12).getPit());
+        pits.get(5).getPit().setNext(pits.get(4).getPit());
 
         for (int i = 7; i < 11; i++) {
-            pits.get(i).setNext(pits.get(i + 1));
-            pits.get(i).setPrev(pits.get(i - 1));
+            pits.get(i).getPit().setNext(pits.get(i + 1).getPit());
+            pits.get(i).getPit().setPrev(pits.get(i - 1).getPit());
         }
-        pits.get(6).setPrev(pits.get(13));
-        pits.get(6).setNext(pits.get(7));
+        pits.get(6).getPit().setPrev(pits.get(13).getPit());
+        pits.get(6).getPit().setNext(pits.get(7).getPit());
 
-        pits.get(11).setPrev(pits.get(10));
-        pits.get(11).setNext(pits.get(12));
+        pits.get(11).getPit().setPrev(pits.get(10).getPit());
+        pits.get(11).getPit().setNext(pits.get(12).getPit());
 
-        pits.get(12).setPrev(pits.get(11));
-        pits.get(12).setNext(pits.get(5));
+        pits.get(12).getPit().setPrev(pits.get(11).getPit());
+        pits.get(12).getPit().setNext(pits.get(5).getPit());
 
-        pits.get(13).setPrev(pits.get(0));
-        pits.get(13).setNext(pits.get(6));
+        pits.get(13).getPit().setPrev(pits.get(0).getPit());
+        pits.get(13).getPit().setNext(pits.get(6).getPit());
 
         for (int i = 0; i < 12; i++) {
-            pits.get(i).setStones(stonesPerPit);
+            pits.get(i).getPit().setStones(stonesPerPit);
         }
-        for (Pit p : pits) {
-            System.out.println(p);
+        for (PitPanel p : pits) {
+            System.out.println(p.getPit());
         }
     }
 
@@ -82,7 +86,7 @@ public class BoardPainter extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
 
         super.paintComponent(g2);
-        for (Pit p : pits) {
+        for (PitPanel p : pits) {
             p.paintComponent(g2);
         }
     }

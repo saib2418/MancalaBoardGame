@@ -22,6 +22,8 @@ public class MancalaTester {
         JComboBox stylesMenu = new JComboBox(stylesList);
         JComboBox stonesMenu = new JComboBox(stonesList);
         JButton startButton = new JButton("Start");
+        JButton undo = new JButton("Undo");
+        undo.setBounds(0, 0, 75, 50);
 
         startButton.addActionListener(e -> {
             initialWindow.dispatchEvent(new WindowEvent(initialWindow, WindowEvent.WINDOW_CLOSING));
@@ -41,25 +43,47 @@ public class MancalaTester {
             }
 
             board = new MancalaBoard(style, numStones);
-            for (Pit p : board.pits) {
+            for (PitPanel p : board.pits) {
                 p.addMouseListener(new MouseAdapter() {
-                    public void mousePressed(MouseEvent e) {
-                        Point mousePoint = e.getPoint();
+                    public void mousePressed(MouseEvent event) {
+                        Point mousePoint = event.getPoint();
                         Ellipse2D.Double pitBoundaries = p.getPitBoundaries();
                         if (pitBoundaries.contains(mousePoint.getX(), mousePoint.getY())) {
-                            board.pitPressed(p.getPosition());
+                            try {
+                                board.pitPressed(p.getPit().getPosition());
+                                board.repaint();
+                            } catch (IllegalStateException illegalStateException) {
+                                JFrame errorMessage = new JFrame("ERROR");
+                                JPanel panel = new JPanel();
+                                JTextArea error = new JTextArea(illegalStateException.getMessage());
+                                error.setFont(new Font("ARIAL", Font.PLAIN, 20));
+                                panel.add(error);
+                                errorMessage.add(panel);
+                                errorMessage.setPreferredSize(new Dimension(400, 400));
+                                Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+                                errorMessage.setLocation(dim.width / 2 - errorMessage.getSize().width / 2, dim.height / 2 - errorMessage.getSize().height / 2);
+                                errorMessage.pack();
+                                errorMessage.setVisible(true);
+                                new Timer(1200, (e) -> {
+                                    errorMessage.setVisible(false);
+                                    errorMessage.dispose();
+                                }).start();
+                            }
                         }
                     }
 
                 });
-                board.listeners.add(p.getListener());
+                // board.listeners.add(p.getListener());
             }
             SwingUtilities.invokeLater(() -> {
                 JFrame jf = new JFrame("Mancala");
+                jf.add(undo);
                 jf.setLayout(new BorderLayout());
                 jf.add(board, BorderLayout.CENTER);
                 jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 jf.setSize(800, 300);
+                Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+                jf.setLocation(dim.width / 2 - jf.getSize().width / 2, dim.height / 2 - jf.getSize().height / 2);
                 jf.setVisible(true);
             });
 
@@ -70,6 +94,8 @@ public class MancalaTester {
         initialWindow.add(stylesMenu);
         initialWindow.add(stonesMenu);
         initialWindow.add(startButton);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        initialWindow.setLocation(dim.width / 2 - initialWindow.getSize().width / 2, dim.height / 2 - initialWindow.getSize().height / 2);
         initialWindow.setVisible(true);
 
     }
