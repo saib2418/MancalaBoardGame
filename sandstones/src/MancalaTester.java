@@ -85,6 +85,7 @@ public class MancalaTester {
                 Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
                 jf.setLocation(dim.width / 2 - jf.getSize().width / 2, dim.height / 2 - jf.getSize().height / 2);
                 jf.setVisible(true);
+
             });
 
         });

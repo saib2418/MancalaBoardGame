@@ -19,4 +19,8 @@ public class CommandManager {
         lastCommand.undo();
         lastCommand = null;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> df4f39562f6a332b423da3e1753ada03381b1da1
