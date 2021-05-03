@@ -23,7 +23,7 @@ public class MancalaTester {
         JComboBox stonesMenu = new JComboBox(stonesList);
         JButton startButton = new JButton("Start");
         JButton undo = new JButton("Undo");
-        undo.setBounds(50, 50, 50, 50);
+        undo.setBounds(0, 0, 75, 50);
 
         startButton.addActionListener(e -> {
             initialWindow.dispatchEvent(new WindowEvent(initialWindow, WindowEvent.WINDOW_CLOSING));
