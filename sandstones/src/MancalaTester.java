@@ -22,6 +22,8 @@ public class MancalaTester {
         JComboBox stylesMenu = new JComboBox(stylesList);
         JComboBox stonesMenu = new JComboBox(stonesList);
         JButton startButton = new JButton("Start");
+        JButton undo = new JButton("Undo");
+        undo.setBounds(50, 50, 50, 50);
 
         startButton.addActionListener(e -> {
             initialWindow.dispatchEvent(new WindowEvent(initialWindow, WindowEvent.WINDOW_CLOSING));
@@ -56,11 +58,13 @@ public class MancalaTester {
             }
             SwingUtilities.invokeLater(() -> {
                 JFrame jf = new JFrame("Mancala");
+                jf.add(undo);
                 jf.setLayout(new BorderLayout());
                 jf.add(board, BorderLayout.CENTER);
                 jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 jf.setSize(800, 300);
                 jf.setVisible(true);
+
             });
 
         });

@@ -135,5 +135,17 @@ public class MancalaBoard extends BoardPainter {
             return pits.get(13);
     }
 
+    private class stoneMove implements Command {
+        private MancalaBoard model;
+        private int previousPosition;
+        private boolean previousTurn;
 
+        public void execute() {
+
+        }
+
+        public void undo() {
+
+        }
+    }
 }
