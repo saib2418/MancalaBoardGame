@@ -98,7 +98,6 @@ public class Pit extends JPanel {
 
     public Ellipse2D.Double getPitBoundaries() {
         return new Ellipse2D.Double(MARGIN, MARGIN, getWidth() - MARGIN * 2, getHeight() - MARGIN * 2);
-
     }
 
     public void paintComponent(Graphics g) {
