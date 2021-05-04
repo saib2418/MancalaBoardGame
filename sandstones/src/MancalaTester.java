@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
@@ -23,6 +25,7 @@ public class MancalaTester {
         JComboBox stonesMenu = new JComboBox(stonesList);
         JButton startButton = new JButton("Start");
         JButton undo = new JButton("Undo");
+        undo.setEnabled(false);
         undo.setBounds(0, 0, 75, 50);
 
         startButton.addActionListener(e -> {
@@ -43,6 +46,16 @@ public class MancalaTester {
             }
 
             board = new MancalaBoard(style, numStones);
+            undo.addActionListener(new ActionListener()
+            		{
+						@Override
+						public void actionPerformed(ActionEvent arg0) 
+						{
+							// TODO Auto-generated method stub
+							board.cm.undo();
+							undo.setEnabled(false);
+						}	
+            		});
             for (PitPanel p : board.pits) {
                 p.addMouseListener(new MouseAdapter() {
                     public void mousePressed(MouseEvent event) {
@@ -52,6 +65,7 @@ public class MancalaTester {
                             try {
                                 board.pitPressed(p.getPit().getPosition());
                                 board.repaint();
+                                undo.setEnabled(true);
                             } catch (IllegalStateException illegalStateException) {
                                 JFrame errorMessage = new JFrame("ERROR");
                                 JPanel panel = new JPanel();
