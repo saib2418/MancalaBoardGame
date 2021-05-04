@@ -53,7 +53,11 @@ public class MancalaTester {
 						{
 							// TODO Auto-generated method stub
 							board.cm.undo();
-							undo.setEnabled(false);
+							board.repaint();
+							if(board.cm.lastCommand == null)
+							{
+								undo.setEnabled(false);
+							}
 						}	
             		});
             for (PitPanel p : board.pits) {
