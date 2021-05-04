@@ -1,10 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 
 
@@ -46,20 +42,17 @@ public class MancalaTester {
             }
 
             board = new MancalaBoard(style, numStones);
-            undo.addActionListener(new ActionListener()
-            		{
-						@Override
-						public void actionPerformed(ActionEvent arg0) 
-						{
-							// TODO Auto-generated method stub
-							board.cm.undo();
-							board.repaint();
-							if(board.cm.lastCommand == null)
-							{
-								undo.setEnabled(false);
-							}
-						}	
-            		});
+            undo.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent arg0) {
+                    // TODO Auto-generated method stub
+                    board.cm.undo();
+                    board.repaint();
+                    if (board.cm.getLastCommand() == null) {
+                        undo.setEnabled(false);
+                    }
+                }
+            });
             for (PitPanel p : board.pits) {
                 p.addMouseListener(new MouseAdapter() {
                     public void mousePressed(MouseEvent event) {
@@ -95,9 +88,10 @@ public class MancalaTester {
             }
             SwingUtilities.invokeLater(() -> {
                 JFrame jf = new JFrame("Mancala");
-                jf.add(undo);
                 jf.setLayout(new BorderLayout());
                 jf.add(board, BorderLayout.CENTER);
+                jf.add(undo, BorderLayout.SOUTH);
+
                 jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 jf.setSize(800, 300);
                 Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

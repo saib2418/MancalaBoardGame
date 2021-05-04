@@ -10,6 +10,10 @@ public class CommandManager {
 
     }
 
+    public Command getLastCommand() {
+        return lastCommand;
+    }
+
     public boolean isUndoAvailable() {
         return lastCommand != null;
     }
@@ -19,8 +23,5 @@ public class CommandManager {
         lastCommand.undo();
         lastCommand = null;
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> df4f39562f6a332b423da3e1753ada03381b1da1
+

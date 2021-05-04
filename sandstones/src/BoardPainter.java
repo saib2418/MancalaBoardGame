@@ -6,6 +6,8 @@ import java.util.EventListener;
 public class BoardPainter extends JPanel {
     protected ArrayList<PitPanel> pits = new ArrayList<>();
     protected ArrayList<EventListener> listeners = new ArrayList<>();
+    protected JLabel player = new JLabel();
+
     protected Style style;
 
     public BoardPainter(Style style, int stonesPerPit) {
@@ -79,6 +81,9 @@ public class BoardPainter extends JPanel {
         for (PitPanel p : pits) {
             System.out.println(p.getPit());
         }
+
+        player.setText("Player -'s turn");
+        add(player, BorderLayout.SOUTH);
     }
 
 
