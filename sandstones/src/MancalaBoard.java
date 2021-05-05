@@ -2,6 +2,8 @@ public class MancalaBoard extends BoardPainter {
     private boolean turn; // true represents Player A and false = Player B
     //private Stack<> moves;
     CommandManager cm = new CommandManager();
+    private int counter;
+
 
     public MancalaBoard(Style style, int stonesPerPit) {
         super(style, stonesPerPit);
@@ -20,6 +22,7 @@ public class MancalaBoard extends BoardPainter {
             player.setText("Player B's turn");
     }
 
+
     private boolean rowAEmpty() {
         return pits.get(6).getPit().isEmpty() && pits.get(7).getPit().isEmpty() && pits.get(8).getPit().isEmpty()
                 && pits.get(9).getPit().isEmpty() && pits.get(10).getPit().isEmpty() && pits.get(11).getPit().isEmpty();
@@ -35,6 +38,7 @@ public class MancalaBoard extends BoardPainter {
             return pos == 6 || pos == 7 || pos == 8 || pos == 9 || pos == 10 || pos == 11;
         } else {
             return pos == 0 || pos == 1 || pos == 2 || pos == 3 || pos == 4 || pos == 5;
+
         }
 
     }
@@ -64,7 +68,6 @@ public class MancalaBoard extends BoardPainter {
         private int originalStones;
         private int oppositeStones;
         private Pit playerMancala;
-        private int counter;
 
         public stoneMove(MancalaBoard model, int pe) {
             this.model = model;
@@ -138,6 +141,7 @@ public class MancalaBoard extends BoardPainter {
                     turn = false;
                     setPlayerLabel();
 
+
                 } else if (!turn) {
                     turn = true;
                     setPlayerLabel();
@@ -145,11 +149,13 @@ public class MancalaBoard extends BoardPainter {
                 }
 
             }
+            counter = 0;
             if (turn) {
                 pits.get(11).getPit().setNext(pits.get(12).getPit());
             } else if (!turn) {
                 pits.get(11).getPit().setNext(pits.get(5).getPit());
             }
+
             if (!turn) {
                 pits.get(0).getPit().setNext(pits.get(13).getPit());
             } else if (turn) {
@@ -182,18 +188,21 @@ public class MancalaBoard extends BoardPainter {
                     if (!previousLastPit.equals(playerMancala)) {
                         turn = !turn;
                         setPlayerLabel();
-                        counter++;
                     }
+                    counter++;
+
                     if (turn) {
                         pits.get(6).getPit().setPrev(pits.get(0).getPit());
                     } else if (!turn) {
                         pits.get(6).getPit().setPrev(pits.get(13).getPit());
                     }
+
                     if (!turn) {
                         pits.get(5).getPit().setPrev(pits.get(11).getPit());
                     } else if (turn) {
                         pits.get(5).getPit().setPrev(pits.get(12).getPit());
                     }
+
                     Pit current = previousLastPit;
                     if (!current.equals(playerMancala)) {
                         if (originalStones == 0) {
@@ -232,6 +241,8 @@ public class MancalaBoard extends BoardPainter {
                 }
             }
         }
+
+
     }
 
     public boolean canUndo() {

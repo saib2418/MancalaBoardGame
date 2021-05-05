@@ -8,6 +8,7 @@ public class BoardPainter extends JPanel {
     protected ArrayList<EventListener> listeners = new ArrayList<>();
     protected JLabel player = new JLabel();
 
+
     protected Style style;
 
     public BoardPainter(Style style, int stonesPerPit) {
