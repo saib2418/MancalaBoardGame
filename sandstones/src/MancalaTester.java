@@ -6,7 +6,7 @@ import java.awt.geom.Ellipse2D;
 
 public class MancalaTester {
     static MancalaBoard board;
-    static int clicked;
+    static int count;
 
     /**
      * paints a full board
@@ -47,12 +47,19 @@ public class MancalaTester {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
                     // TODO Auto-generated method stub
+                    count++;
+                    if (count > 3) {
+                        undo.setEnabled(false);
+                        count = 0;
+                        throw new IllegalStateException("Error: Undo cannot be clicked.");
+                    }
                     board.cm.undo();
                     board.repaint();
-
                     if (board.cm.getLastCommand() == null) {
-                        undo.setEnabled(false);
+                        undo.setEnabled(true);
                     }
+
+
                 }
             });
             for (PitPanel p : board.pits) {
@@ -114,4 +121,5 @@ public class MancalaTester {
         initialWindow.setVisible(true);
 
     }
+
 }

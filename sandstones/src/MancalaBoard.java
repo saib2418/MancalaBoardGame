@@ -2,6 +2,8 @@ public class MancalaBoard extends BoardPainter {
     private boolean turn; // true represents Player A and false = Player B
     //private Stack<> moves;
     CommandManager cm = new CommandManager();
+    private int undoCounter = 0;
+
 
     public MancalaBoard(Style style, int stonesPerPit) {
         super(style, stonesPerPit);
@@ -60,6 +62,7 @@ public class MancalaBoard extends BoardPainter {
         private int previousStones;
         private boolean previousTurn;
         private int pe;
+        private int counter;
         private Pit previousLastPit;
         private int originalStones;
         private int oppositeStones;
@@ -71,6 +74,7 @@ public class MancalaBoard extends BoardPainter {
             previousStones = model.pits.get(pe).getPit().getStones();
             previousTurn = model.turn;
             originalStones = 1;
+
         }
 
         public void execute() {
@@ -131,8 +135,7 @@ public class MancalaBoard extends BoardPainter {
 
             System.out.println("After stones loop");
 
-            if (!((turn && next.prev.getPosition() == 12) ||
-                    (!turn && next.prev.getPosition() == 13))) {
+            if (!((turn && next.prev.getPosition() == 12) || (!turn && next.prev.getPosition() == 13))) {
                 if (turn) {
                     turn = false;
                     setPlayerLabel();
@@ -142,6 +145,7 @@ public class MancalaBoard extends BoardPainter {
                     setPlayerLabel();
 
                 }
+                undoCounter = 0;
 
             }
             if (turn) {
@@ -181,6 +185,7 @@ public class MancalaBoard extends BoardPainter {
                     if (turn) {
                         turn = false;
                         setPlayerLabel();
+
 
                     } else if (!turn) {
                         turn = true;
@@ -238,6 +243,10 @@ public class MancalaBoard extends BoardPainter {
     }
 
     public boolean canUndo() {
+        undoCounter++;
+        if (undoCounter >= 3) {
+            return false;
+        }
         return cm.isUndoAvailable();
     }
 
