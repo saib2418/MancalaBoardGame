@@ -176,7 +176,7 @@ public class MancalaBoard extends BoardPainter {
         }
 
         public void undo() {
-            if (counter < 3) {
+            if (counter <= 3) {
                 if (canUndo()) {
                     System.out.println("Undo button clicked.");
                     if (!previousLastPit.equals(playerMancala)) {
