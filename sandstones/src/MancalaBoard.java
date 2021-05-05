@@ -64,6 +64,7 @@ public class MancalaBoard extends BoardPainter {
         private int originalStones;
         private int oppositeStones;
         private Pit playerMancala;
+        private int counter;
 
         public stoneMove(MancalaBoard model, int pe) {
             this.model = model;
@@ -175,47 +176,51 @@ public class MancalaBoard extends BoardPainter {
         }
 
         public void undo() {
-            if (canUndo()) {
-                System.out.println("Undo button clicked.");
-                if (!previousLastPit.equals(playerMancala)) {
-                    if (turn) {
-                        turn = false;
+            if (counter < 3) {
+                if (canUndo()) {
+                    System.out.println("Undo button clicked.");
+                    if (!previousLastPit.equals(playerMancala)) {
+                        turn = !turn;
                         setPlayerLabel();
-
-                    } else if (!turn) {
-                        turn = true;
-                        setPlayerLabel();
-
+                        counter++;
                     }
-                }
-                if (turn) {
-                    pits.get(6).getPit().setPrev(pits.get(0).getPit());
-                } else if (!turn) {
-                    pits.get(6).getPit().setPrev(pits.get(13).getPit());
-                }
-                if (!turn) {
-                    pits.get(5).getPit().setPrev(pits.get(11).getPit());
-                } else if (turn) {
-                    pits.get(5).getPit().setPrev(pits.get(12).getPit());
-                }
-                Pit current = previousLastPit;
-                if (!current.equals(playerMancala)) {
-                    if (originalStones == 0) {
-                        int removeStones = oppositeStones + 1;
-                        while (removeStones > 0) {
-                            playerMancala.loseStone();
-                            removeStones--;
-                        }
-                        getOppositePit(current).addMany(oppositeStones);
-                        current = current.getPrev();
-                        int undoStones = previousStones - 1;
-                        while (undoStones > 0) {
-                            current.loseStone();
+                    if (turn) {
+                        pits.get(6).getPit().setPrev(pits.get(0).getPit());
+                    } else if (!turn) {
+                        pits.get(6).getPit().setPrev(pits.get(13).getPit());
+                    }
+                    if (!turn) {
+                        pits.get(5).getPit().setPrev(pits.get(11).getPit());
+                    } else if (turn) {
+                        pits.get(5).getPit().setPrev(pits.get(12).getPit());
+                    }
+                    Pit current = previousLastPit;
+                    if (!current.equals(playerMancala)) {
+                        if (originalStones == 0) {
+                            int removeStones = oppositeStones + 1;
+                            while (removeStones > 0) {
+                                playerMancala.loseStone();
+                                removeStones--;
+                            }
+                            getOppositePit(current).addMany(oppositeStones);
                             current = current.getPrev();
-                            undoStones--;
+                            int undoStones = previousStones - 1;
+                            while (undoStones > 0) {
+                                current.loseStone();
+                                current = current.getPrev();
+                                undoStones--;
+                            }
+                            current.addMany(previousStones);
+                        } else {
+                            int undoStones = previousStones;
+                            while (undoStones > 0) {
+                                current.loseStone();
+                                current = current.getPrev();
+                                undoStones--;
+                            }
+                            current.addMany(previousStones);
                         }
-                        current.addMany(previousStones);
-                    } else {
+                    } else if (current.equals(playerMancala)) {
                         int undoStones = previousStones;
                         while (undoStones > 0) {
                             current.loseStone();
@@ -224,14 +229,6 @@ public class MancalaBoard extends BoardPainter {
                         }
                         current.addMany(previousStones);
                     }
-                } else if (current.equals(playerMancala)) {
-                    int undoStones = previousStones;
-                    while (undoStones > 0) {
-                        current.loseStone();
-                        current = current.getPrev();
-                        undoStones--;
-                    }
-                    current.addMany(previousStones);
                 }
             }
         }
