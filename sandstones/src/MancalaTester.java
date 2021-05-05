@@ -47,16 +47,16 @@ public class MancalaTester {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
                     // TODO Auto-generated method stub
-                    count++;
+                    /*count++;
                     if (count > 3) {
                         undo.setEnabled(false);
                         count = 0;
-                        throw new IllegalStateException("Error: Undo cannot be clicked.");
-                    }
+                        //throw new IllegalStateException("Error: Undo cannot be clicked.");
+                    }*/
                     board.cm.undo();
                     board.repaint();
                     if (board.cm.getLastCommand() == null) {
-                        undo.setEnabled(true);
+                        undo.setEnabled(false);
                     }
 
 
