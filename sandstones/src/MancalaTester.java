@@ -6,12 +6,13 @@ import java.awt.geom.Ellipse2D;
 
 public class MancalaTester {
     static MancalaBoard board;
+    static int clicked;
 
     /**
      * paints a full board
      */
 
-    public static void main(String... args) {
+    public static <clicked> void main(String... args) {
         JFrame initialWindow = new JFrame("Settings");
 
         String[] stylesList = {"Blue", "Green", "Pink"};
@@ -48,6 +49,7 @@ public class MancalaTester {
                     // TODO Auto-generated method stub
                     board.cm.undo();
                     board.repaint();
+
                     if (board.cm.getLastCommand() == null) {
                         undo.setEnabled(false);
                     }
