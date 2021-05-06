@@ -150,7 +150,9 @@ public class MancalaBoard extends BoardPainter {
 
             } else {
                 System.out.println("Finished in Mancala! A bonus turn!");
-
+                if (undoCounter > 3) {
+                    undoCounter = 0;
+                }
             }
 
             if (turn) {
