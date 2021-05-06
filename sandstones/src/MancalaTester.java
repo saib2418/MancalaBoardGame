@@ -6,13 +6,12 @@ import java.awt.geom.Ellipse2D;
 
 public class MancalaTester {
     static MancalaBoard board;
-    static int count;
 
     /**
      * paints a full board
      */
 
-    public static <clicked> void main(String... args) {
+    public static void main(String... args) {
         JFrame initialWindow = new JFrame("Settings");
 
         String[] stylesList = {"Blue", "Green", "Pink"};
@@ -46,20 +45,11 @@ public class MancalaTester {
             undo.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-                    // TODO Auto-generated method stub
-                    /*count++;
-                    if (count > 3) {
-                        undo.setEnabled(false);
-                        count = 0;
-                        //throw new IllegalStateException("Error: Undo cannot be clicked.");
-                    }*/
                     board.cm.undo();
                     board.repaint();
                     if (board.cm.getLastCommand() == null) {
                         undo.setEnabled(false);
                     }
-
-
                 }
             });
             for (PitPanel p : board.pits) {
@@ -93,7 +83,6 @@ public class MancalaTester {
                     }
 
                 });
-                // board.listeners.add(p.getListener());
             }
             SwingUtilities.invokeLater(() -> {
                 JFrame jf = new JFrame("Mancala");

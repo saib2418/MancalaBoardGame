@@ -1,6 +1,5 @@
 public class MancalaBoard extends BoardPainter {
     private boolean turn; // true represents Player A and false = Player B
-    //private Stack<> moves;
     CommandManager cm = new CommandManager();
     public int undoCounter = 0;
 
@@ -57,10 +56,6 @@ public class MancalaBoard extends BoardPainter {
             return pits.get(13).getPit();
     }
 
-    public String getPlayerLabel() {
-        return turn ? "A" : "B";
-    }
-
     private class stoneMove implements Command {
         private MancalaBoard model;
         private int previousStones;
@@ -103,7 +98,6 @@ public class MancalaBoard extends BoardPainter {
                 throw new IllegalStateException("Error: Clicking an empty pit is\nnot a move. Try another pit.");
 
             }
-
 
             Pit next = current.getPit().getNext();
             while (stones > 0) {
@@ -264,16 +258,6 @@ public class MancalaBoard extends BoardPainter {
         }
 
         return cm.isUndoAvailable();
-    }
-
-    class Move {
-        int pitPressed;
-        int stonesMoved;
-
-        public Move(int pit, int stones) {
-            pitPressed = pit;
-            stonesMoved = stones;
-        }
     }
 
 }

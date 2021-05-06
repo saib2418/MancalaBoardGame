@@ -7,7 +7,6 @@ public class CommandManager {
     public void executeCommand(Command c) {
         c.execute();
         lastCommand = c;
-
     }
 
     public Command getLastCommand() {

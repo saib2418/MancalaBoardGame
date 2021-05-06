@@ -24,7 +24,6 @@ public class BoardPainter extends JPanel {
             PitPanel pitPanel = new PitPanel(p, style);
             pits.add(pitPanel);
 
-            // listeners.add(p.getListener());
             center.add(pitPanel);
         }
 
@@ -32,7 +31,6 @@ public class BoardPainter extends JPanel {
         // one side
         Pit east = new Pit(12);
         PitPanel eastPanel = new PitPanel(east, style);
-        // listeners.add(east.getListener());
         pits.add(eastPanel);
 
         eastPanel.setPreferredSize(new Dimension(100, 100));
@@ -42,7 +40,6 @@ public class BoardPainter extends JPanel {
         // the other side
         Pit west = new Pit(13);
         PitPanel westPanel = new PitPanel(west, style);
-        //listeners.add(west.getListener());
         pits.add(westPanel);
 
         westPanel.setPreferredSize(new Dimension(100, 100));
@@ -55,7 +52,7 @@ public class BoardPainter extends JPanel {
             pits.get(i).getPit().setPrev(pits.get(i + 1).getPit());
         }
         pits.get(0).getPit().setPrev(pits.get(1).getPit());
-        pits.get(0).getPit().setNext(pits.get(13).getPit()); // This might need to be changed when the skip other player's mancala part works.
+        pits.get(0).getPit().setNext(pits.get(13).getPit());
 
         pits.get(5).getPit().setPrev(pits.get(12).getPit());
         pits.get(5).getPit().setNext(pits.get(4).getPit());

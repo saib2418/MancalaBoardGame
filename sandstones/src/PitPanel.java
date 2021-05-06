@@ -22,7 +22,6 @@ public class PitPanel extends JPanel {
 
     private void initializePanel(int position) {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        // label.setFont(new Font("Arial", Font.PLAIN, 16));
 
         if (position <= 5) {
             label.setText("B" + (position + 1));
@@ -69,37 +68,6 @@ public class PitPanel extends JPanel {
 
     public void paintComponent(Graphics g) {
         initializePanel(pit.getPosition());
-//        Graphics2D g2 = (Graphics2D) g;
-//        int stones = pit.getStones();
-//        super.paintComponent(g2);
-//        setBackground(style.getBoardBackgroundColor());
-//        int pitStroke = style.getPitStrokeThickness();
-//        g2.setStroke(new BasicStroke(pitStroke));
-//        g2.setColor(style.getLineColor());
-//        g2.drawOval(MARGIN, MARGIN, getWidth() - MARGIN * 2, getHeight() - MARGIN * 2);
-//        g2.setColor(style.getPitBackgroundColor());
-//        g2.fillOval(MARGIN, MARGIN, getWidth() - MARGIN * 2, getHeight() - MARGIN * 2);
-//
-//        int position = pit.getPosition();
-//        if (position <= 5)
-//            g2.drawString("\nA" + pit.getPosition(), 20, 10);
-//        else if (position <= 11)
-//            g2.drawString("\nB" + (pit.getPosition() - 6), 20, 10);
-//
-//
-//        int h = getWidth() / 2 - MARGIN * 6;
-//        int k = getHeight() / 2 - MARGIN * 6;
-//        double twoPI = Math.PI * 2;
-//        Point center = new Point(getWidth() / 2, getHeight() / 2);
-//        g2.setColor(style.getStoneColor());
-//        g2.setStroke(new BasicStroke(style.getStoneStrokeThickness()));
-//        g2.setFont(new Font("Arial", Font.BOLD, 18));
-//        g2.drawString(stones + "", center.x, center.y);
-//        for (int i = 0; i < stones; i++) {
-//            int a = (int) (center.x + h * Math.cos(twoPI * i / stones)) - MARGIN;
-//            int b = (int) (center.y + k * Math.sin(twoPI * i / stones)) - MARGIN;
-//            g2.fillOval(a, b, STONE_SIZE, STONE_SIZE);
-//        }
     }
 
     private class StonesPanel extends JPanel {
@@ -115,8 +83,6 @@ public class PitPanel extends JPanel {
         }
 
         public void paintComponent(Graphics g) {
-//            System.out.println(pit.getPosition());
-//            System.out.println(getWidth() + " by " + getHeight());
             Graphics2D g2 = (Graphics2D) g;
             int stones = pit.getStones();
             super.paintComponent(g2);
