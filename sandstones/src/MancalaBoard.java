@@ -57,6 +57,10 @@ public class MancalaBoard extends BoardPainter {
             return pits.get(13).getPit();
     }
 
+    public String getPlayerLabel() {
+        return turn ? "A" : "B";
+    }
+
     private class stoneMove implements Command {
         private MancalaBoard model;
         private int previousStones;
@@ -136,30 +140,33 @@ public class MancalaBoard extends BoardPainter {
             System.out.println("After stones loop");
 
             if (!((turn && next.prev.getPosition() == 12) || (!turn && next.prev.getPosition() == 13))) {
-                if (turn) {
-                    turn = false;
-                    setPlayerLabel();
-
-                } else if (!turn) {
-                    turn = true;
-                    setPlayerLabel();
-
-                }
+                System.out.println("Didn't finish in Mancala pit");
+                turn = !turn;
+                setPlayerLabel();
 
                 if (undoCounter > 3) {
                     undoCounter = 0;
                 }
 
+            } else {
+                System.out.println("Finished in Mancala! A bonus turn!");
 
             }
+
             if (turn) {
                 pits.get(11).getPit().setNext(pits.get(12).getPit());
+                pits.get(6).getPit().setPrev(pits.get(0).getPit());
+
             } else if (!turn) {
                 pits.get(11).getPit().setNext(pits.get(5).getPit());
+                pits.get(6).getPit().setPrev(pits.get(13).getPit());
+
             }
             if (!turn) {
+                pits.get(5).getPit().setPrev(pits.get(11).getPit());
                 pits.get(0).getPit().setNext(pits.get(13).getPit());
             } else if (turn) {
+                pits.get(5).getPit().setPrev(pits.get(12).getPit());
                 pits.get(0).getPit().setNext(pits.get(6).getPit());
             }
 
@@ -177,9 +184,9 @@ public class MancalaBoard extends BoardPainter {
                 // move all stones from row A to Mancala A
             }
 
-            for (PitPanel p : pits) {
-                System.out.println("Pit " + p.getPit().getPosition() + " stones: " + p.getPit().getStones());
-            }
+//            for (PitPanel p : pits) {
+//                System.out.println("Pit " + p.getPit().getPosition() + " stones: " + p.getPit().getStones());
+//            }
         }
 
         public void undo() {
@@ -191,14 +198,22 @@ public class MancalaBoard extends BoardPainter {
                 }
 
                 if (turn) {
+                    pits.get(11).getPit().setNext(pits.get(12).getPit());
+
                     pits.get(6).getPit().setPrev(pits.get(0).getPit());
                 } else if (!turn) {
+                    pits.get(11).getPit().setNext(pits.get(5).getPit());
+
                     pits.get(6).getPit().setPrev(pits.get(13).getPit());
                 }
                 if (!turn) {
                     pits.get(5).getPit().setPrev(pits.get(11).getPit());
+                    pits.get(0).getPit().setNext(pits.get(13).getPit());
+
                 } else if (turn) {
                     pits.get(5).getPit().setPrev(pits.get(12).getPit());
+                    pits.get(0).getPit().setNext(pits.get(6).getPit());
+
                 }
                 Pit current = previousLastPit;
                 if (!current.equals(playerMancala)) {
