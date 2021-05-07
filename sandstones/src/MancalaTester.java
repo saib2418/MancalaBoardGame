@@ -3,14 +3,15 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 
-
+/**
+ * Tester class for Mancala project.
+ *
+ * @version 4.0
+ * @authors Rhea, Sai, Rammy
+ */
 public class MancalaTester {
     static MancalaBoard board;
-
-    /**
-     * paints a full board
-     */
-
+    
     public static void main(String... args) {
         JFrame initialWindow = new JFrame("Settings");
 
@@ -52,7 +53,7 @@ public class MancalaTester {
                     }
                 }
             });
-            for (PitPanel p : board.pits) {
+            for (PitPanel p : board.pitPanels) {
                 p.addMouseListener(new MouseAdapter() {
                     public void mousePressed(MouseEvent event) {
                         Point mousePoint = event.getPoint();
